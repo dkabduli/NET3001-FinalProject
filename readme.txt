@@ -7,7 +7,7 @@ Student 1 — Abdul Rehman
   Hardware build, TinkerCAD schematic, demo video, serial monitor testing.
 
 Student 2 — Isaac Abdile
-  Firmware (this repo), LCD + 7-segment via 595, written report (docs/REPORT.md).
+  Firmware (this repo), LCD + 7-segment via 595, written report (docs/REPORT.docx).
 
 Build / upload
 --------------
@@ -17,5 +17,7 @@ Serial monitor: 9600 baud (see platformio.ini).
 
 Docs
 ----
-docs/REPORT.md     — submission write-up (same roles as above)
-docs/PIN_LAYOUT.md — pin table vs PinMap.h
+docs/REPORT.docx    — submission report (Word)
+docs/CHECKLIST.docx — done / remaining tasks (Word); see also docs/CHECKLIST.md
+docs/PIN_LAYOUT.md  — pin table vs PinMap.h
+docs/REPORT.md      — pointer to REPORT.docx
