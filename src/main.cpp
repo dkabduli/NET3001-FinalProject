@@ -1,5 +1,5 @@
 // NET3001 final group 19
-// traffic light + ultrasonic + th e red-light check
+// traffic light and ultrasonic and th e red-light check
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include "GPIO.h"

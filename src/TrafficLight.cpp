@@ -1,4 +1,4 @@
-// big file for traffic + lcd + seg + violation on red
+// big file for traffic and lcd and seg and violation on red
 // thresholds tuned on breadboard not  sim
 // zone far/near is kinda arbitary
 #include <Arduino.h>
