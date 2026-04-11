@@ -23,7 +23,7 @@ void setup(void)
     PCINT_buttons_init();
     Timer1_init_1Hz_tick();
     TrafficLight_init();
-    sei(); // interupts on (global)
+    sei(); 
 }
 
 void loop(void)
