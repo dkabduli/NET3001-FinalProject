@@ -1,6 +1,3 @@
-/*
- * Shift register + 7-segment — we only ever show one digit 0-9
- */
 #include <Arduino.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -39,7 +36,6 @@ void SevenSeg_init(void)
 
 void SevenSeg_show_digit(uint8_t d)
 {
-    /* lookup table for segments — common cathode */
     static const uint8_t map[10] = {0x3Fu, 0x06u, 0x5Bu, 0x4Fu, 0x66u,
                                     0x6Du, 0x7Du, 0x07u, 0x7Fu, 0x6Fu};
     if (d > 9u)

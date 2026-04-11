@@ -1,7 +1,3 @@
-/*
- * buttons use pin change interrupts
- *   debounce is all in software (kinda slow but works)
- */
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -25,8 +21,8 @@ ISR(PCINT1_vect)
 void PCINT_buttons_init(void)
 {
     PCICR |= (uint8_t)((1u << PCIE0) | (1u << PCIE1));
-    PCMSK0 |= (uint8_t)(1u << PCINT2); /* pause D10 */
-    PCMSK1 |= (uint8_t)(1u << PCINT8); /* reset A0 */
+    PCMSK0 |= (uint8_t)(1u << PCINT2);
+    PCMSK1 |= (uint8_t)(1u << PCINT8);
 }
 
 static uint8_t take_pause(void)

@@ -1,7 +1,4 @@
-/*
- * 1 second heartbeat using timer1 compare
- *   main loop polls the flag — not using delay() for the traffic timing
- */
+//timer1 ~1 sec for countdown — not using delay() in loop for th at
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include <stdint.h>
@@ -17,7 +14,6 @@ ISR(TIMER1_COMPA_vect)
 void Timer1_init_1Hz_tick(void)
 {
     TCCR1A = 0u;
-    /* ctc + prescaler, ocr picked for ~1s — check calc on 16mhz */
     TCCR1B = (uint8_t)((1u << WGM12) | (1u << CS12) | (1u << CS10));
     OCR1A = 15624u;
     TIMSK1 = (uint8_t)(1u << OCIE1A);
@@ -27,7 +23,7 @@ void Timer1_init_1Hz_tick(void)
 uint8_t Timer1_consume_1s_tick(void)
 {
     uint8_t oldSREG = SREG;
-    cli(); /* dont let isr flip flag mid read */
+    cli(); // dont let isr clobber flag while u read
     uint8_t v = s_pending_1s;
     s_pending_1s = 0u;
     SREG = oldSREG;

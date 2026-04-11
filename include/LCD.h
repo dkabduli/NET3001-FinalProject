@@ -1,4 +1,4 @@
-/* 16x2 parallel lcd */
+// paralell 16x2 lcd  
 #ifndef LCD_H
 #define LCD_H
 

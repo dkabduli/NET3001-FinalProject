@@ -1,4 +1,3 @@
-/* one digit countdown on 7-segment */
 #ifndef SEVENSEG_H
 #define SEVENSEG_H
 

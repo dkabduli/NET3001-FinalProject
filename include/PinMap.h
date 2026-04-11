@@ -1,13 +1,9 @@
-/*
- * all ddr/port/bit defs in one header
- *   change here if you rewire breadboard
- */
+// all th e ddr port defs in one place if u mess up wiring fix here
 #ifndef PINMAP_H
 #define PINMAP_H
 
 #include <stdint.h>
 
-/* leds on analog pins */
 #define LED_GRN_DDR DDRC
 #define LED_GRN_PORT PORTC
 #define LED_GRN_BIT 2u
@@ -30,9 +26,6 @@
 #define BTN_RESET_PORT PORTC
 #define BTN_RESET_BIT 0u
 
-/*
- * Buzzer — PORT pin in PinMap; Buzzer.cpp toggles BUZ_PORT
- */
 #define BUZ_DDR DDRD
 #define BUZ_PORT PORTD
 #define BUZ_BIT 3u
@@ -46,7 +39,6 @@
 #define SONIC_ECHO_PORT PORTD
 #define SONIC_ECHO_BIT 2u
 
-/* shift register (SER/CLK/RCLK) wires */
 #define SR_SER_DDR DDRB
 #define SR_SER_PORT PORTB
 #define SR_SER_BIT 3u

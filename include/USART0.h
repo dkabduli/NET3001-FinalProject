@@ -1,4 +1,4 @@
-/* print to serial monitor at 9600 */
+// usart 9600 8n1
 #ifndef USART0_H
 #define USART0_H
 

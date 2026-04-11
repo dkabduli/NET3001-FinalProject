@@ -1,4 +1,3 @@
-/* ddr setup for whole project */
 #ifndef GPIO_H
 #define GPIO_H
 

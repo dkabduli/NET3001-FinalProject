@@ -1,4 +1,4 @@
-/* pause / reset buttons */
+// pause + reset debounce in c file
 #ifndef PCINT_BUTTONS_H
 #define PCINT_BUTTONS_H
 

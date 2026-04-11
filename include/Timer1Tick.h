@@ -1,4 +1,3 @@
-/* ~1s flag from timer1 isr */
 #ifndef TIMER1TICK_H
 #define TIMER1TICK_H
 

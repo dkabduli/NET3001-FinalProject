@@ -1,7 +1,4 @@
-/*
- * Ultrasonic sensor distance
- *   blocking loops — if echo takes forever we bail with 0
- */
+// dist in cm — echo pulse stuff
 #include <Arduino.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -24,7 +21,7 @@ uint16_t Ultrasound_read_cm(void)
     while ((SONIC_ECHO_PIN & (1u << SONIC_ECHO_BIT)) == 0u) {
         _delay_us(1);
         if (++wait > 30000u)
-            return 0u; /* nothing came back */
+            return 0u;
     }
     uint16_t us = 0u;
     while ((SONIC_ECHO_PIN & (1u << SONIC_ECHO_BIT)) != 0u) {
@@ -32,9 +29,5 @@ uint16_t Ultrasound_read_cm(void)
         if (++us > 30000u)
             return 0u;
     }
-    /*
-  * /58 rule from internet
-     * not perfect but ok for this assingment
- */
-    return (uint16_t)(us / 58u);
+    return (uint16_t)(us / 58u); // /58 approx from  online
 }

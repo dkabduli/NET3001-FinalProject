@@ -1,8 +1,5 @@
-/*
- * NET3001 final project
- *    traffic light + ultrasonic sensor red light checker
- * group 19
- */
+// NET3001 final group 19
+// traffic light + ultrasonic + th e red-light check
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include "GPIO.h"
@@ -17,7 +14,6 @@
 
 void setup(void)
 {
-    /* gpio first — if you skip this pins float wierd */
     GPIO_init();
     USART0_init_9600();
     LCD_init();
@@ -25,17 +21,12 @@ void setup(void)
     Buzzer_init();
     Ultrasound_init();
     PCINT_buttons_init();
-    /*
-  * timer1 init after other stuff
-     * so we dont get random ticks mid init
- */
     Timer1_init_1Hz_tick();
     TrafficLight_init();
-    sei(); /* global interrupts */
+    sei(); // interupts on (global)
 }
 
 void loop(void)
 {
-    /* everything happens in TrafficLight_step */
     TrafficLight_step();
 }
