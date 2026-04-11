@@ -1,4 +1,4 @@
-/* Serial.print under the hood would work too — this is bare registers for the course */
+/* 9600 8N1 using registers — could use Serial.begin but we needed to show USART setup */
 #include <Arduino.h>
 #include <stdint.h>
 #include "USART0.h"
@@ -6,7 +6,7 @@
 void USART0_init_9600(void)
 {
     UBRR0H = 0u;
-    UBRR0L = 103u;
+    UBRR0L = 103u; /* 16mhz / (16*baud) - 1 ≈ 103 for 9600 */
     UCSR0A = 0u;
     UCSR0B = (uint8_t)((1u << TXEN0) | (1u << RXEN0));
     UCSR0C = (uint8_t)((1u << UCSZ01) | (1u << UCSZ00));
@@ -15,7 +15,7 @@ void USART0_init_9600(void)
 static void USART0_tx_byte(uint8_t b)
 {
     while ((UCSR0A & (1u << UDRE0)) == 0u) {
-    } // spin until TX buffer free
+    } /* wait till data reg empty */
     UDR0 = b;
 }
 
@@ -33,14 +33,14 @@ static void print_digits(uint16_t v)
         USART0_tx_byte((uint8_t)'0');
         return;
     }
-    char tmp[6]; // stack buffer, print reversed
+    char tmp[6];
     uint8_t i = 0u;
     while (v > 0u && i < sizeof(tmp)) {
         tmp[i++] = (char)('0' + (v % 10u));
         v /= 10u;
     }
     while (i > 0u)
-        USART0_tx_byte((uint8_t)tmp[--i]);
+        USART0_tx_byte((uint8_t)tmp[--i]); /* reverse order */
 }
 
 void USART0_print_u16(uint16_t v)

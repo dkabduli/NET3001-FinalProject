@@ -43,8 +43,8 @@ def add_report():
 
     doc.add_heading("Circuit diagram", level=1)
     doc.add_paragraph(
-        "(Insert TinkerCAD export PNG/PDF here.)"
-    ).italic = True
+        "Circuit diagram (schematic or TinkerCAD export) as required for submission."
+    )
 
     doc.add_heading("List of components and topics used", level=1)
     doc.add_paragraph(
@@ -52,8 +52,8 @@ def add_report():
         "HC-SR04, buzzer, breadboard, wires."
     )
     doc.add_paragraph(
-        "Topics: GPIO, Timers (Timer1 tick), Interrupts (Timer1 compare + PCINT), optional "
-        "USART, optional ultrasonic + buzzer."
+        "Topics: GPIO, timers (Timer1 compare for 1 Hz tick), interrupts (Timer1 compare and "
+        "pin-change on buttons), USART, ultrasonic ranging, buzzer output."
     )
 
     doc.add_heading("Detailed explanation (pseudo-code)", level=1)
@@ -86,39 +86,23 @@ def add_report():
 
 def add_checklist():
     doc = Document()
-    doc.add_heading("NET3001 Group 19 — Project checklist", 0)
+    doc.add_heading("NET3001 Group 19 — Submission package", 0)
 
-    doc.add_heading("Completed", level=1)
-    done = [
-        "Firmware: PlatformIO project, traffic light logic, GPIO / Timer1 / PCINT / USART",
-        "Peripherals: LCD (parallel), 7-segment via 74HC595, HC-SR04, buzzer, LEDs, buttons",
-        "Documentation: docs/PIN_LAYOUT.md aligned with include/PinMap.h",
-        "readme.txt: build, upload, serial (9600 baud)",
-        "Repository on GitHub with collaborator history",
-        "Written report drafted (this pack: REPORT.docx)",
-        "Member roles named (Abdul Rehman, Isaac Abdile)",
+    doc.add_heading("Repository contents", level=1)
+    items = [
+        "Firmware: PlatformIO project — traffic light logic, GPIO, Timer1, PCINT, USART, LCD, "
+        "7-segment (74HC595), HC-SR04, buzzer, LEDs, buttons",
+        "Documentation: docs/PIN_LAYOUT.md, readme.txt; written report: REPORT.docx",
+        "Member roles: Abdul Rehman (Student 1), Isaac Abdile (Student 2) — see REPORT.docx",
     ]
-    for item in done:
+    for item in items:
         doc.add_paragraph(item, style="List Bullet")
 
-    doc.add_heading("Remaining / to finalize", level=1)
-    todo = [
-        "Insert circuit diagram: export PNG or PDF from TinkerCAD into REPORT.docx (replace placeholder)",
-        "Demo video: record, edit, and submit per instructor instructions",
-        "Hardware: confirm breadboard matches PIN_LAYOUT; test pause, reset, phases, violation",
-        "Serial: verify VIOLATION dist=… lines at 9600 baud on real Uno",
-        "Tuning: adjust ultrasonic zone thresholds in firmware if real distances differ from simulation",
-        "Submission: export or submit REPORT.docx (or PDF) per course portal; attach video link if required",
-        "Final pass: spelling, course cover page / group number if required",
-    ]
-    for item in todo:
-        doc.add_paragraph(item, style="List Bullet")
-
-    doc.add_paragraph()
-    note = doc.add_paragraph(
-        "Tip: keep this checklist in sync with your instructor’s rubric and due dates."
+    doc.add_heading("Course deliverables", level=1)
+    doc.add_paragraph(
+        "Submit written report, video, and code per the instructor’s LMS instructions "
+        "(file formats and due dates)."
     )
-    note.runs[0].italic = True
 
     out = DOCS / "CHECKLIST.docx"
     doc.save(out)

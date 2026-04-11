@@ -1,13 +1,11 @@
 # Report (NET3001 Final)
 
-The submission report is maintained as **Microsoft Word**: open **`REPORT.docx`** in this folder.
+The written report is **`docs/REPORT.docx`** (Word). A PDF export may be submitted if the course requires it.
 
-It includes the title, group members and contributions, system description, circuit diagram placeholder, components and topics, pseudo-code, and reflection.
-
-To regenerate the Word file from the project script (after editing `scripts/generate_report_docx.py`):
+To regenerate the `.docx` files from the generator script:
 
 ```bash
 python3 scripts/generate_report_docx.py
 ```
 
-(Requires: `pip install python-docx`.)
+Requires: `pip install python-docx`.

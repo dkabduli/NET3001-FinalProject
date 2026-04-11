@@ -1,4 +1,4 @@
-/* 9600 8N1 printf-ish helpers for Serial Monitor */
+/* serial 9600 — print strings and u16 for violation distance */
 #ifndef USART0_H
 #define USART0_H
 

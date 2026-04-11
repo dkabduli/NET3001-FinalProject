@@ -1,8 +1,13 @@
-/* Active buzzer — just drive the pin high for a bit */
+/*
+ * our module is a piezo — tone() makes it actually loud. just digitalWrite high was
+ * super quiet. uses timer2 internally i think, timer1 is still our 1hz tick
+ */
 #include <Arduino.h>
-#include <util/delay.h>
 #include "Buzzer.h"
 #include "PinMap.h"
+
+/* arduino pin number for PD3 — has to match pinmap or it wont compile right */
+static const uint8_t kBuzArduinoPin = 3u;
 
 void Buzzer_init(void)
 {
@@ -11,7 +16,12 @@ void Buzzer_init(void)
 
 void Buzzer_beep_once(void)
 {
-    BUZ_PORT |= (uint8_t)(1u << BUZ_BIT);
-    _delay_ms(60); // length is arbitrary, sounds ok on ours
-    BUZ_PORT &= (uint8_t) ~(1u << BUZ_BIT);
+    /* double beep so you actually notice it */
+    tone(kBuzArduinoPin, 2500);
+    delay(200);
+    noTone(kBuzArduinoPin);
+    delay(45);
+    tone(kBuzArduinoPin, 2500);
+    delay(200);
+    noTone(kBuzArduinoPin);
 }

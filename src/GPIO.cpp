@@ -3,14 +3,14 @@
 #include "GPIO.h"
 #include "PinMap.h"
 
-// output low — LEDs, shift reg lines, buzzer, trig, LCD control/data
+/* output, start low — leds, shift reg pins, buzzer off, trig low, lcd as outputs */
 static void out1(volatile uint8_t *ddr, volatile uint8_t *port, uint8_t bit)
 {
     *ddr |= (uint8_t)(1u << bit);
     *port &= (uint8_t) ~(1u << bit);
 }
 
-// buttons go to gnd when pressed so internal pullup = idle high
+/* input with pullup for buttons (they tie to gnd when pressed) */
 static void in_pullup(volatile uint8_t *ddr, volatile uint8_t *port, uint8_t bit)
 {
     *ddr &= (uint8_t) ~(1u << bit);
@@ -19,7 +19,7 @@ static void in_pullup(volatile uint8_t *ddr, volatile uint8_t *port, uint8_t bit
 
 void GPIO_init(void)
 {
-    // kinda tedious but beats wiring mistakes later
+    /* alot of lines but its just setting ddr/port once at boot */
     out1(&LED_GRN_DDR, &LED_GRN_PORT, LED_GRN_BIT);
     out1(&LED_AMB_DDR, &LED_AMB_PORT, LED_AMB_BIT);
     out1(&LED_RED_DDR, &LED_RED_PORT, LED_RED_BIT);

@@ -1,4 +1,4 @@
-/* 1 Hz tick flag from Timer1 compare ISR */
+/* ~1 second tick from timer1 compare match ISR */
 #ifndef TIMER1TICK_H
 #define TIMER1TICK_H
 

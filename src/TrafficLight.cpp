@@ -1,4 +1,4 @@
-/* Brain of the project — timings + red-phase ultrasonic "camera" */
+/* main state machine — lights, 7seg countdown, red light + HC-SR04 "camera" */
 #include <Arduino.h>
 #include <stdint.h>
 #include "TrafficLight.h"
@@ -14,16 +14,16 @@
 typedef enum { PH_GREEN = 0, PH_AMBER, PH_RED } phase_t;
 
 static phase_t s_phase;
-static uint8_t s_sec_left;
-static uint8_t s_running;
-static uint8_t s_violation_lcd_ticks;
+static uint8_t s_sec_left;     /* seconds left in this color phase */
+static uint8_t s_running;      /* 0 = paused */
+static uint8_t s_violation_lcd_ticks; /* how many 1s ticks to keep VIOLATION on lcd before normal text */
 
-/* cm thresholds — had to tweak on the real bench, datasheet math was noisy */
+/* far/near in cm — tuned on real hardware, sim wasnt the same */
 static const uint16_t ZONE_FAR_CM = 45u;
 static const uint16_t ZONE_NEAR_CM = 18u;
 
-static uint16_t s_prev_cm;
-static uint8_t s_armed; // don't spam violations; re-arm when nobody's close
+static uint16_t s_prev_cm; /* last reading for edge detect */
+static uint8_t s_armed;    /* after a violation we dont retrigger till car is far again */
 
 static void leds_only_green(void)
 {
@@ -46,6 +46,7 @@ static void leds_only_red(void)
     LED_RED_PORT |= (uint8_t)(1u << LED_RED_BIT);
 }
 
+/* normal driving messages, not the violation screen */
 static void lcd_normal(void)
 {
     if (s_phase == PH_GREEN) {
@@ -75,6 +76,7 @@ void TrafficLight_init(void)
 
 static void next_phase(void)
 {
+    /* green -> amber 5s -> red 10s -> green... */
     if (s_phase == PH_GREEN) {
         s_phase = PH_AMBER;
         s_sec_left = 5u;
@@ -96,8 +98,8 @@ static void next_phase(void)
 
 static void tick_one_second(void)
 {
-    if (s_running == 0u) // pause freezes countdown
-        return;
+    if (s_running == 0u)
+        return; /* pause button stops the countdown */
     if (s_sec_left > 1u) {
         s_sec_left--;
         SevenSeg_show_digit(s_sec_left);
@@ -108,11 +110,10 @@ static void tick_one_second(void)
 
 static void handle_violation(uint16_t cm)
 {
-    // one beep + lcd flash + serial line for prof / demo
     Buzzer_beep_once();
     LCD_line1("VIOLATION! ");
     LCD_line2("RED LIGHT RUN");
-    s_violation_lcd_ticks = 2u;
+    s_violation_lcd_ticks = 2u; /* 2 seconds-ish to read it before lcd goes back */
     USART0_print("VIOLATION dist=");
     USART0_print_u16(cm);
     USART0_print(" cm\r\n");
@@ -125,8 +126,9 @@ static void poll_red_camera(void)
 
     uint16_t cm = Ultrasound_read_cm();
     if (cm == 0u)
-        return; // timeout / bad read — skip this pass
-    // edge-ish: was "far", now "near" while red -> count as run the light
+        return; /* timeout / glitch, skip */
+
+    /* far then near while red = ran the light (wich is what we count) */
     if (s_armed != 0u && s_prev_cm >= ZONE_FAR_CM && cm <= ZONE_NEAR_CM) {
         handle_violation(cm);
         s_armed = 0u;
@@ -142,6 +144,7 @@ void TrafficLight_step(void)
         s_running = (uint8_t)(1u - s_running);
 
     if (PCINT_consume_reset_click() != 0u) {
+        /* reset goes straight to green full 10s */
         s_phase = PH_GREEN;
         s_sec_left = 10u;
         s_running = 1u;
@@ -152,7 +155,6 @@ void TrafficLight_step(void)
         s_armed = 1u;
     }
     if (Timer1_consume_1s_tick() != 0u) {
-        // hold violation message a couple seconds so you can actually read it
         if (s_violation_lcd_ticks > 0u) {
             s_violation_lcd_ticks--;
             if (s_violation_lcd_ticks == 0u)

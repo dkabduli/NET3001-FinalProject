@@ -1,4 +1,4 @@
-/* Public API for the traffic-light state machine (see TrafficLight.cpp) */
+/* traffic light + violation logic — call init once then step every loop */
 #ifndef TRAFFICLIGHT_H
 #define TRAFFICLIGHT_H
 

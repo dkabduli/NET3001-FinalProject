@@ -1,4 +1,4 @@
-/* HD44780 4-bit init sequence — basically copied from class notes then tested */
+/* 16x2 hd44780, 4 bit mode on D4-D7 — init sequence is wierd but standard */
 #include <Arduino.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -12,6 +12,7 @@ static void lcd_nibble_write(uint8_t nibble, uint8_t rs)
     else
         LCD_RS_PORT &= (uint8_t) ~(1u << LCD_RS_BIT);
 
+    /* bit bang 4 data lines */
     LCD_D4_PORT = (LCD_D4_PORT & (uint8_t) ~(1u << LCD_D4_BIT)) |
                   (uint8_t)(((nibble >> 0) & 1u) << LCD_D4_BIT);
     LCD_D5_PORT = (LCD_D5_PORT & (uint8_t) ~(1u << LCD_D5_BIT)) |
@@ -35,14 +36,14 @@ static void lcd_byte_write(uint8_t value, uint8_t rs)
 
 void LCD_init(void)
 {
-    _delay_ms(50); // power-up wait
+    _delay_ms(50); /* power on wait */
     lcd_nibble_write(0x03u, 0u);
     _delay_ms(5);
     lcd_nibble_write(0x03u, 0u);
     _delay_us(200);
     lcd_nibble_write(0x03u, 0u);
     lcd_nibble_write(0x02u, 0u);
-    lcd_byte_write(0x28u, 0u);
+    lcd_byte_write(0x28u, 0u); /* 4 line? no 2 lines 5x8 */
     lcd_byte_write(0x0Cu, 0u);
     lcd_byte_write(0x06u, 0u);
     LCD_clear();
@@ -74,7 +75,7 @@ void LCD_line1(const char *text)
     while (n < 16u) {
         lcd_putc(' ');
         n++;
-    } // pad to 16 cols so old chars don't linger
+    } /* pad spaces or else old chars stay on screen */
 }
 
 void LCD_line2(const char *text)
@@ -86,5 +87,5 @@ void LCD_line2(const char *text)
     while (n < 16u) {
         lcd_putc(' ');
         n++;
-    } // pad line 2 same as line 1
+    }
 }

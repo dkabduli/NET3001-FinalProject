@@ -1,4 +1,4 @@
-/* Debounced pause/reset from pin-change interrupts */
+/* pin change interrupts + debounce — pause/reset */
 #ifndef PCINT_BUTTONS_H
 #define PCINT_BUTTONS_H
 

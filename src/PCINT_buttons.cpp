@@ -1,4 +1,4 @@
-/* Pin-change ISRs for the two buttons — debounce lives in "consume" fns */
+/* PCINT on both buttons — PB2 pause, PC0 reset. debouncing done in software not hardware */
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -22,8 +22,8 @@ ISR(PCINT1_vect)
 void PCINT_buttons_init(void)
 {
     PCICR |= (uint8_t)((1u << PCIE0) | (1u << PCIE1));
-    PCMSK0 |= (uint8_t)(1u << PCINT2); // pause on PB2
-    PCMSK1 |= (uint8_t)(1u << PCINT8); // reset on PC0 (A0)
+    PCMSK0 |= (uint8_t)(1u << PCINT2); /* D10 */
+    PCMSK1 |= (uint8_t)(1u << PCINT8); /* A0 */
 }
 
 static uint8_t take_pause(void)
@@ -60,11 +60,11 @@ uint8_t PCINT_consume_pause_click(void)
 {
     if (take_pause() == 0u)
         return 0u;
-    _delay_ms(25); // cheap debounce — works ok on our switches
+    _delay_ms(25); /* dumb debounce */
     if (stable_low_pause() == 0u)
-        return 0u;
+        return 0u; /* noise */
     while (stable_low_pause() != 0u) {
-    } // wait for release
+    } /* wait till they let go */
     _delay_ms(25);
     return 1u;
 }

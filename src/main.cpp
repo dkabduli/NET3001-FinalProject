@@ -1,4 +1,4 @@
-/* Group 19 — Abdul did the bench setup + serial checks, Isaac did the code side */
+/* NET3001 final — traffic light + ultrasonic thing, group 19 */
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include "GPIO.h"
@@ -13,7 +13,7 @@
 
 void setup(void)
 {
-    // init order kinda matters — GPIO first then peripherals
+    /* gpio first so pins arent floating */
     GPIO_init();
     USART0_init_9600();
     LCD_init();
@@ -21,13 +21,14 @@ void setup(void)
     Buzzer_init();
     Ultrasound_init();
     PCINT_buttons_init();
+    /* timer after other stuff so we dont miss ticks during init */
     Timer1_init_1Hz_tick();
     TrafficLight_init();
-    sei(); // global ints on after everything's ready
+    sei(); /* ints on last */
 }
 
 void loop(void)
 {
-    // whole app is basically one state machine tick
+    /* all the real logic is in TrafficLight_step, loop is just that */
     TrafficLight_step();
 }

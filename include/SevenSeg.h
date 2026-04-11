@@ -1,4 +1,4 @@
-/* Single digit 0-9 on 7-seg via 74HC595 */
+/* one digit 0-9 on 7seg through 595 shift reg */
 #ifndef SEVENSEG_H
 #define SEVENSEG_H
 
