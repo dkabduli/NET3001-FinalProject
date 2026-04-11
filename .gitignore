@@ -4,3 +4,7 @@
 .vscode/launch.json
 .vscode/ipch
 .DS_Store
+# Large local demo assets (exceed GitHub 100 MB limit; host elsewhere)
+IMG_4240.MOV
+IMG_4240.MOV.zip
+~$*.docx
