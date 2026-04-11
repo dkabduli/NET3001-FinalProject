@@ -1,4 +1,4 @@
-/* one digit 0-9 on 7seg through 595 shift reg */
+/* one digit countdown on 7-segment */
 #ifndef SEVENSEG_H
 #define SEVENSEG_H
 

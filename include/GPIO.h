@@ -1,4 +1,4 @@
-/* sets up ddr/port for all pins before anything else runs */
+/* ddr setup for whole project */
 #ifndef GPIO_H
 #define GPIO_H
 

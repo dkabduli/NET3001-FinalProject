@@ -1,4 +1,7 @@
-/* PCINT on both buttons — PB2 pause, PC0 reset. debouncing done in software not hardware */
+/*
+ * buttons use pin change interrupts
+ *   debounce is all in software (kinda slow but works)
+ */
 #include <Arduino.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -22,8 +25,8 @@ ISR(PCINT1_vect)
 void PCINT_buttons_init(void)
 {
     PCICR |= (uint8_t)((1u << PCIE0) | (1u << PCIE1));
-    PCMSK0 |= (uint8_t)(1u << PCINT2); /* D10 */
-    PCMSK1 |= (uint8_t)(1u << PCINT8); /* A0 */
+    PCMSK0 |= (uint8_t)(1u << PCINT2); /* pause D10 */
+    PCMSK1 |= (uint8_t)(1u << PCINT8); /* reset A0 */
 }
 
 static uint8_t take_pause(void)
@@ -60,11 +63,11 @@ uint8_t PCINT_consume_pause_click(void)
 {
     if (take_pause() == 0u)
         return 0u;
-    _delay_ms(25); /* dumb debounce */
+    _delay_ms(25);
     if (stable_low_pause() == 0u)
-        return 0u; /* noise */
+        return 0u;
     while (stable_low_pause() != 0u) {
-    } /* wait till they let go */
+    }
     _delay_ms(25);
     return 1u;
 }

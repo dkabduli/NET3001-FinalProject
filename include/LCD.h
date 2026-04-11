@@ -1,4 +1,4 @@
-/* 16x2 hd44780, 4 bit mode */
+/* 16x2 parallel lcd */
 #ifndef LCD_H
 #define LCD_H
 

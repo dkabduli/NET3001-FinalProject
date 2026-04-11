@@ -1,4 +1,4 @@
-/* HC-SR04 distance in cm, 0 means bad read / timeout */
+/* ultrasonic sensor read distance cm, 0 if timeout */
 #ifndef ULTRASONIC_H
 #define ULTRASONIC_H
 

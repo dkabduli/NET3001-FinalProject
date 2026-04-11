@@ -1,4 +1,4 @@
-/* traffic light + violation logic — call init once then step every loop */
+/* traffic + violation logic — init once then step in loop */
 #ifndef TRAFFICLIGHT_H
 #define TRAFFICLIGHT_H
 

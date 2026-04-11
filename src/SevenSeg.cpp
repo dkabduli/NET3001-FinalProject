@@ -1,4 +1,6 @@
-/* 595 shift register — clock data in then latch to outputs. only one digit */
+/*
+ * Shift register + 7-segment — we only ever show one digit 0-9
+ */
 #include <Arduino.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -21,7 +23,6 @@ static void latch(void)
 
 static void sr_send(uint8_t b)
 {
-    /* msb first into SER */
     for (uint8_t i = 0u; i < 8u; i++) {
         if ((b & 0x80u) != 0u)
             SR_SER_PORT |= (uint8_t)(1u << SR_SER_BIT);
@@ -38,7 +39,7 @@ void SevenSeg_init(void)
 
 void SevenSeg_show_digit(uint8_t d)
 {
-    /* common cathode segment map, if yours is common anode youd invert */
+    /* lookup table for segments — common cathode */
     static const uint8_t map[10] = {0x3Fu, 0x06u, 0x5Bu, 0x4Fu, 0x66u,
                                     0x6Du, 0x7Du, 0x07u, 0x7Fu, 0x6Fu};
     if (d > 9u)

@@ -1,4 +1,7 @@
-/* 9600 8N1 using registers — could use Serial.begin but we needed to show USART setup */
+/*
+ * serial without the Serial class — registers only
+ *   9600 to match serial monitor
+ */
 #include <Arduino.h>
 #include <stdint.h>
 #include "USART0.h"
@@ -6,7 +9,7 @@
 void USART0_init_9600(void)
 {
     UBRR0H = 0u;
-    UBRR0L = 103u; /* 16mhz / (16*baud) - 1 ≈ 103 for 9600 */
+    UBRR0L = 103u; /* ubrr for 16mhz 9600 */
     UCSR0A = 0u;
     UCSR0B = (uint8_t)((1u << TXEN0) | (1u << RXEN0));
     UCSR0C = (uint8_t)((1u << UCSZ01) | (1u << UCSZ00));
@@ -15,7 +18,7 @@ void USART0_init_9600(void)
 static void USART0_tx_byte(uint8_t b)
 {
     while ((UCSR0A & (1u << UDRE0)) == 0u) {
-    } /* wait till data reg empty */
+    }
     UDR0 = b;
 }
 
@@ -40,7 +43,7 @@ static void print_digits(uint16_t v)
         v /= 10u;
     }
     while (i > 0u)
-        USART0_tx_byte((uint8_t)tmp[--i]); /* reverse order */
+        USART0_tx_byte((uint8_t)tmp[--i]);
 }
 
 void USART0_print_u16(uint16_t v)

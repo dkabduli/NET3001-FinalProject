@@ -1,4 +1,4 @@
-/* piezo buzzer on pin D3, see Buzzer.cpp */
+/* beep on violation — see Buzzer.cpp */
 #ifndef BUZZER_H
 #define BUZZER_H
 

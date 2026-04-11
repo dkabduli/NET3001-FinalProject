@@ -1,4 +1,7 @@
-/* HC-SR04 — blocking pulse measure, not ideal but ok for this loop */
+/*
+ * Ultrasonic sensor distance
+ *   blocking loops — if echo takes forever we bail with 0
+ */
 #include <Arduino.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -7,12 +10,10 @@
 
 void Ultrasound_init(void)
 {
-    /* gpio already did trig/echo */
 }
 
 uint16_t Ultrasound_read_cm(void)
 {
-    /* 10us trigger */
     SONIC_TRIG_PORT &= (uint8_t) ~(1u << SONIC_TRIG_BIT);
     _delay_us(2);
     SONIC_TRIG_PORT |= (uint8_t)(1u << SONIC_TRIG_BIT);
@@ -23,7 +24,7 @@ uint16_t Ultrasound_read_cm(void)
     while ((SONIC_ECHO_PIN & (1u << SONIC_ECHO_BIT)) == 0u) {
         _delay_us(1);
         if (++wait > 30000u)
-            return 0u; /* no echo, return 0 so caller ignores */
+            return 0u; /* nothing came back */
     }
     uint16_t us = 0u;
     while ((SONIC_ECHO_PIN & (1u << SONIC_ECHO_BIT)) != 0u) {
@@ -31,6 +32,9 @@ uint16_t Ultrasound_read_cm(void)
         if (++us > 30000u)
             return 0u;
     }
-    /* /58 thing from datasheet / forums, works ok becuase were not doing lab precision */
+    /*
+  * /58 rule from internet
+     * not perfect but ok for this assingment
+ */
     return (uint16_t)(us / 58u);
 }

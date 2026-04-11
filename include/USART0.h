@@ -1,4 +1,4 @@
-/* serial 9600 — print strings and u16 for violation distance */
+/* print to serial monitor at 9600 */
 #ifndef USART0_H
 #define USART0_H
 

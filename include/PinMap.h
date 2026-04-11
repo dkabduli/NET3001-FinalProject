@@ -1,13 +1,13 @@
 /*
- * All the pin defs in one place — change here if breadboard wiring moves
- * (keep docs/PIN_LAYOUT.md in sync or TA gets confused)
+ * all ddr/port/bit defs in one header
+ *   change here if you rewire breadboard
  */
 #ifndef PINMAP_H
 #define PINMAP_H
 
 #include <stdint.h>
 
-/* traffic lights analog pins */
+/* leds on analog pins */
 #define LED_GRN_DDR DDRC
 #define LED_GRN_PORT PORTC
 #define LED_GRN_BIT 2u
@@ -20,7 +20,6 @@
 #define LED_RED_PORT PORTC
 #define LED_RED_BIT 4u
 
-/* D10 pause, internal pullup in gpio */
 #define BTN_PAUSE_DDR DDRB
 #define BTN_PAUSE_PIN PINB
 #define BTN_PAUSE_PORT PORTB
@@ -32,7 +31,7 @@
 #define BTN_RESET_BIT 0u
 
 /*
- * buzzer D3 — Buzzer.cpp uses arduino pin 3 for tone(), same pin
+ * Buzzer — PORT pin in PinMap; Buzzer.cpp toggles BUZ_PORT
  */
 #define BUZ_DDR DDRD
 #define BUZ_PORT PORTD
@@ -47,7 +46,7 @@
 #define SONIC_ECHO_PORT PORTD
 #define SONIC_ECHO_BIT 2u
 
-/* 595: D11 D12 D13 */
+/* shift register (SER/CLK/RCLK) wires */
 #define SR_SER_DDR DDRB
 #define SR_SER_PORT PORTB
 #define SR_SER_BIT 3u
