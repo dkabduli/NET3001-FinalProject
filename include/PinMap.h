@@ -1,4 +1,7 @@
 // all th e ddr port defs in one place if u mess up wiring fix here
+// --- board pin map header ---
+// each macro maps one logical signal to avr DDR PORT PIN and bit number.
+// modules include this so hardware wiring stays centralized in one file.
 #ifndef PINMAP_H
 #define PINMAP_H
 
