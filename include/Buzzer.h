@@ -2,14 +2,14 @@
  * BUZZER MODULE HEADER
  *
  * Possible question: "What is public here?"
- * Answer: These declarations are the public functions callable by other files.
+ * Answer: These are the functions other files can call.
  */
 #ifndef BUZZER_H
 #define BUZZER_H
 
-// Initializes buzzer pin state (safe startup, no accidental beep).
+// Set buzzer to a safe startup state.
 void Buzzer_init(void);
-// Emits one short alert pulse used by violation detection.
+// Play one short beep.
 void Buzzer_beep_once(void);
 
 #endif

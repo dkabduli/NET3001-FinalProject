@@ -2,13 +2,12 @@
  * GPIO MODULE HEADER
  *
  * Possible question: "Why do this in one function?"
- * Answer: Centralized hardware initialization avoids duplicated setup and
- * inconsistent pin direction/levels across modules.
+ * Answer: One setup place keeps pins consistent in all modules.
  */
 #ifndef GPIO_H
 #define GPIO_H
 
-// Applies DDR and PORT defaults for all mapped peripherals.
+// Set pin directions and default pin levels.
 void GPIO_init(void);
 
 #endif

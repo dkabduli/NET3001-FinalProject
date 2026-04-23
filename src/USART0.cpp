@@ -2,25 +2,19 @@
  * USART0 MODULE (9600 8N1 UART) - Rewritten implementation overview
  *
  * What this module does:
- * - Configures AVR USART0 for asynchronous serial communication at 9600 baud.
- * - Provides transmit helpers for text strings and uint16 decimal values.
- * - Uses a blocking byte-send primitive to guarantee ordered output.
+ * - Sets up AVR USART0 for async serial at 9600 baud.
+ * - Provides helpers to print text and uint16 values.
+ * - Uses blocking byte send so output order stays correct.
  *
  * Why this module is meaningful in the project:
- * - Serial output is the most practical observability channel for debugging and
- *   violation/event logging during development and demonstration.
- * - Deterministic UART prints make it easier to verify timing-sensitive traffic
- *   behavior and reason about state transitions.
+ * - Serial output is useful for debug and violation logs.
+ * - Ordered UART output helps check traffic behavior.
  *
  * Why it is written this way:
- * - Explicit register configuration (UBRR/UCSR/UDR) keeps behavior transparent
- *   and avoids hidden library defaults.
- * - Polling UDRE0 before each write guarantees data register readiness and
- *   prevents dropped bytes in simple single-threaded firmware.
- * - Integer printing is implemented locally to avoid heavy stdio formatting
- *   overhead on constrained AVR memory.
- * - The API stays intentionally small (init, print, print_u16) so other modules
- *   depend on stable functionality rather than UART internals.
+ * - Register setup (UBRR/UCSR/UDR) makes behavior clear.
+ * - Polling UDRE0 avoids lost bytes.
+ * - Local number printing avoids heavy stdio cost.
+ * - Small API keeps UART internals hidden.
  */
 #include <Arduino.h> // brings AVR register names like UCSR0A UBRR0L UDR0
 #include <stdint.h>  // fixed width integer types

@@ -1,34 +1,31 @@
 /*
- * SHIFT REGISTER DISPLAY HEADER - Rewritten contract
+ * SHIFT REGISTER DISPLAY HEADER
  *
  * Note:
- * - This header represents the project's "ShiftReg module" API through the
- *   SevenSeg abstraction.
+ * - This is the ShiftReg API in this project.
+ * - The ShiftReg code lives in SevenSeg.cpp.
  *
- * What this header defines:
- * - Public functions to initialize and update the shift-register-driven display.
+ * What this header has:
+ * - Public functions to init and update the 7-seg display.
  *
- * Why this interface matters:
- * - Other modules can render digits without managing serial bit shifting,
- *   latch timing, or segment encoding.
- * - A small API keeps higher-level traffic logic independent from display wiring.
+ * Why this matters:
+ * - Other files can show digits without handling shift bits or latch timing.
  *
- * Why structured this way:
- * - Include guards ensure safe multi-include behavior.
- * - Encapsulation at the header boundary protects callers from hardware-level
- *   implementation details that may change during future refinements.
+ * Why this style:
+ * - Include guards stop double include issues.
+ * - Details stay inside the .cpp file.
  *
  * Possible question: "Where is ShiftReg implemented?"
- * Answer: In SevenSeg.cpp via SER/CLK/RCK helper routines.
+ * Answer: In SevenSeg.cpp with SER/CLK/RCK helper functions.
  */
 #ifndef SEVENSEG_H
 #define SEVENSEG_H
 
 #include <stdint.h>
 
-// SevenSeg_init keeps init symmetry with other modules.
+// Init function for this module.
 void SevenSeg_init(void);
-// SevenSeg_show_digit updates segments for value zero to nine.
+// Show one digit from 0 to 9.
 void SevenSeg_show_digit(uint8_t d);
 
 #endif

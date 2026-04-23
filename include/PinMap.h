@@ -1,15 +1,14 @@
 /*
  * BOARD PIN MAP
  *
- * Possible question: "Why keep all pin mappings in one header?"
- * Answer: It centralizes hardware wiring, so if wiring changes we only update
- * this file instead of editing every module.
+ * Possible question: "Why keep pin maps in one file?"
+ * Answer: If wiring changes, we edit this file only.
  *
  * Possible question: "What are DDR/PORT/PIN?"
  * Answer:
- * - DDRx  : direction register (1=output, 0=input)
- * - PORTx : output value (or pull-up enable for input pins)
- * - PINx  : input read register
+ * - DDRx  : sets pin direction (1 output, 0 input)
+ * - PORTx : writes output value or turns on pull-up
+ * - PINx  : reads input value
  */
 #ifndef PINMAP_H
 #define PINMAP_H
@@ -32,14 +31,14 @@
 #define LED_RED_BIT 4u
 
 // Pause button input -> Arduino D10 (PB2)
-// BTN_PAUSE_PORT is used to enable internal pull-up when configured as input.
+// BTN_PAUSE_PORT can enable the internal pull-up.
 #define BTN_PAUSE_DDR DDRB
 #define BTN_PAUSE_PIN PINB
 #define BTN_PAUSE_PORT PORTB
 #define BTN_PAUSE_BIT 2u
 
 // Reset button input -> Arduino A0 (PC0)
-// BTN_RESET_PORT is used to enable internal pull-up when configured as input.
+// BTN_RESET_PORT can enable the internal pull-up.
 #define BTN_RESET_DDR DDRC
 #define BTN_RESET_PIN PINC
 #define BTN_RESET_PORT PORTC
@@ -56,7 +55,7 @@
 #define SONIC_TRIG_BIT 5u
 
 // Ultrasonic echo input -> Arduino D2 (PD2)
-// SONIC_ECHO_PIN is read to measure pulse width.
+// Read SONIC_ECHO_PIN to measure echo pulse width.
 #define SONIC_ECHO_DDR DDRD
 #define SONIC_ECHO_PIN PIND
 #define SONIC_ECHO_PORT PORTD
