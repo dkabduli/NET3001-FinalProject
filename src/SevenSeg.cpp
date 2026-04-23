@@ -1,3 +1,29 @@
+/*
+ * SHIFT REGISTER DISPLAY MODULE (74HC595 + 7-segment) - Rewritten overview
+ *
+ * Note:
+ * - The shift-register behavior is implemented in this SevenSeg module.
+ *
+ * What this module does:
+ * - Serially shifts one byte into a 74HC595 using SER/CLK, then latches output.
+ * - Maps digits 0..9 to segment patterns and updates a single 7-segment display.
+ * - Encapsulates clock/latch timing so callers only pass the digit to show.
+ *
+ * Why this module is meaningful in the project:
+ * - It expands output capability while using very few MCU pins.
+ * - Provides a fast, glanceable numeric indicator (e.g., timer/countdown state)
+ *   that complements LCD text.
+ * - Keeps time-critical bit-level signaling reliable and centralized.
+ *
+ * Why it is written this way:
+ * - Dedicated helpers (`pulse_clk`, `latch`, `sr_send`) separate protocol steps
+ *   for clarity and easier verification.
+ * - MSB-first shifting with explicit bit tests keeps ordering predictable and
+ *   matches the module's segment-map design.
+ * - Minimal microsecond delays enforce clean clock/latch edges on hardware.
+ * - Digit clamping prevents table out-of-range access and ensures safe behavior
+ *   even if a caller passes invalid input.
+ */
 #include <Arduino.h>    // direct access to AVR port registers
 #include <util/delay.h> // tiny pulse timing helpers
 #include <stdint.h>     // uint8_t types

@@ -1,10 +1,14 @@
-// --- gpio header ---
-// GPIO_init configures all pin directions and safe startup levels.
-// other modules assume setup() calls this before they run.
+/*
+ * GPIO MODULE HEADER
+ *
+ * Possible question: "Why do this in one function?"
+ * Answer: Centralized hardware initialization avoids duplicated setup and
+ * inconsistent pin direction/levels across modules.
+ */
 #ifndef GPIO_H
 #define GPIO_H
 
-// GPIO_init applies DDR and PORT defaults for leds buttons lcd buzzer and sensors.
+// Applies DDR and PORT defaults for all mapped peripherals.
 void GPIO_init(void);
 
 #endif

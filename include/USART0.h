@@ -1,7 +1,24 @@
-// usart 9600 8n1
-// ifndef guard avoids double include no matter compiler settings
-// --- usart header ---
-// this module gives basic serial printing for debug and violation logging.
+/*
+ * USART0 MODULE HEADER - Rewritten contract
+ *
+ * What this header defines:
+ * - Public serial API for initializing UART and printing strings/uint16 values.
+ * - A narrow, reliable interface for diagnostics and event logging.
+ *
+ * Why this interface matters:
+ * - Application modules can emit useful runtime information without touching
+ *   hardware registers or duplicating UART setup logic.
+ * - Shared, centralized serial routines keep output format and behavior
+ *   consistent across the project.
+ *
+ * Why structured this way:
+ * - Include guards ensure safe repeated inclusion on all supported compilers.
+ * - The interface is kept compact to reduce coupling and preserve flexibility
+ *   for internal UART implementation changes.
+ *
+ * Possible question: "Why is only a small API exposed?"
+ * Answer: Keeping UART internals private reduces coupling and misuse.
+ */
 #ifndef USART0_H
 #define USART0_H
 

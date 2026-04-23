@@ -1,12 +1,15 @@
-// ifndef guard keeps this declaration file one copy per compile unit
-// --- traffic state machine header ---
-// this module coordinates leds lcd sensor buttons timer and buzzer behavior.
+/*
+ * TRAFFIC LIGHT MODULE HEADER
+ *
+ * Possible question: "Why use #ifndef instead of #pragma once?"
+ * Answer: Include guards are fully portable across embedded toolchains.
+ */
 #ifndef TRAFFICLIGHT_H
 #define TRAFFICLIGHT_H
 
-// TrafficLight_init sets startup phase and output state.
+// Public API: initialize state machine and all display state assumptions.
 void TrafficLight_init(void);
-// TrafficLight_step runs one loop slice of control logic.
+// Public API: call repeatedly from Arduino loop() for non-blocking operation.
 void TrafficLight_step(void);
 
 #endif

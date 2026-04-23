@@ -1,3 +1,17 @@
+/*
+ * TRAFFIC CONTROLLER MODULE
+ *
+ * Possible question: "Why so many static variables/functions?"
+ * Answer: `static` keeps state and helpers private to this file, which prevents
+ * accidental external access and keeps module boundaries clean.
+ *
+ * Possible question: "Where does this run from?"
+ * Answer: Arduino `loop()` repeatedly calls `TrafficLight_step()`, so this file
+ * is written as non-blocking step logic instead of one giant blocking function.
+ *
+ * Possible question: "Why uint8_t/uint16_t?"
+ * Answer: Fixed-width integer types are predictable on embedded targets.
+ */
 // traffic controller state machine and red light violation logic
 // zone far and near values are tuned thresholds for motion trigger
 #include <Arduino.h>       // AVR register and ISR related symbols
@@ -15,12 +29,15 @@
 typedef enum { PH_GREEN = 0, PH_AMBER, PH_RED } phase_t; // traffic phases in order
 
 // shared state for current phase, countdown, pause, and lcd override timing
+// Possible question: "What does static mean here?"
+// Answer: File-scope private storage (not visible from other translation units).
 static phase_t s_phase;                // current active phase
-static uint8_t s_sec_left;             // countdown value shown on seven segment
-static uint8_t s_running;              // 1 running, 0 paused
-static uint8_t s_violation_lcd_ticks;  // remaining seconds to keep violation text
+static uint8_t s_sec_left;             // uint8_t: compact 0..255 countdown value
+static uint8_t s_running;              // uint8_t flag (1 running, 0 paused)
+static uint8_t s_violation_lcd_ticks;  // seconds to keep violation banner
 
 // crossing detection window in centimeters
+// uint16_t used because measured distances can exceed 255 cm.
 static const uint16_t ZONE_FAR_CM = 45u;  // considered far from stop line
 static const uint16_t ZONE_NEAR_CM = 18u; // considered crossing near stop line
 
@@ -178,6 +195,8 @@ static void poll_red_camera(void)
 // TrafficLight_step is called from loop and coordinates buttons timer and sensor.
 void TrafficLight_step(void)
 {
+    // Possible question: "Why is this function short and called repeatedly?"
+    // Answer: It supports cooperative, non-blocking loop-based scheduling.
     // pause button toggles run state
     if (PCINT_consume_pause_click() != 0u)
         s_running = (uint8_t)(1u - s_running); // toggle between 1 and 0

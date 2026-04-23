@@ -1,5 +1,27 @@
-// 4bit lcd delais from lab sheet moslty
-// each byte is sent as two nibbles on D4 D5 D6 D7 pins
+/*
+ * LCD MODULE (HD44780, 4-bit mode) - Rewritten implementation overview
+ *
+ * What this module does:
+ * - Drives a 16x2 HD44780-compatible LCD using a 4-bit data bus.
+ * - Provides a small, stable API for startup, clear, and writing full text lines.
+ * - Converts every 8-bit command/data write into two 4-bit transfers.
+ *
+ * Why this module is meaningful in the project:
+ * - The LCD is the primary local user-feedback surface for the traffic system.
+ * - Reliable text output lets users understand live state instantly without a PC.
+ * - The implementation avoids hidden side effects, so higher-level logic can call
+ *   LCD functions repeatedly without stale characters or inconsistent cursor state.
+ *
+ * Why it is written this way:
+ * - 4-bit interface reduces GPIO usage while still supporting all needed commands.
+ * - Direct port-bit updates provide deterministic timing and low overhead compared
+ *   with generic digitalWrite-style calls.
+ * - Split internal helpers (nibble write, byte write, cursor move, char write)
+ *   keep hardware details localized and make the public API simple to maintain.
+ * - Initialization follows the HD44780 wake sequence to safely enter 4-bit mode
+ *   from unknown power-on states.
+ * - Line writers always pad to 16 characters to guarantee old text is erased.
+ */
 #include <Arduino.h>    // AVR register names for port writes
 #include <util/delay.h> // blocking microsecond millisecond delays
 #include <stdint.h>     // uint8_t types for byte operations
